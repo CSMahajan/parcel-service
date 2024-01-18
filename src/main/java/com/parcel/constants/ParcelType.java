@@ -9,18 +9,18 @@ public enum ParcelType {
 
 
     private int priority;
-    private String parcelType;
+    private String parcelTypeName;
 
-    ParcelType(int priority, String parcelType) {
+    ParcelType(int priority, String parcelTypeName) {
         this.priority = priority;
-        this.parcelType = parcelType;
+        this.parcelTypeName = parcelTypeName;
     }
 
     public int getPriority() {
         return priority;
     }
 
-    public String getParcelType() {
-        return parcelType;
+    public String getParcelTypeName() {
+        return parcelTypeName;
     }
 }
