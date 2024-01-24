@@ -12,6 +12,9 @@ public class ParcelExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<Object> rejectParcel(ParcelException exception) {
         System.out.println(exception.getMessage());
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        ParcelApiError parcelApiError = new ParcelApiError();
+        parcelApiError.setErrorMessage(exception.getMessage());
+        parcelApiError.setErrorCode(String.valueOf(HttpStatus.BAD_REQUEST));
+        return new ResponseEntity<>(parcelApiError, HttpStatus.BAD_REQUEST);
     }
 }

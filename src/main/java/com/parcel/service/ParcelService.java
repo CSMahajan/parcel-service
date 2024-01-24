@@ -3,6 +3,7 @@ package com.parcel.service;
 import com.parcel.dto.CostDetails;
 import com.parcel.dto.ParcelDetails;
 import com.parcel.entity.Parcel;
+import com.parcel.exception.ParcelException;
 import com.parcel.repository.ParcelRepository;
 import com.parcel.strategy.CostCalculatorStrategy;
 import com.parcel.wrapper.ParcelCostDetailsWrapper;
@@ -26,12 +27,17 @@ public class ParcelService {
         this.costCalculatorService = costCalculatorService;
     }
 
-    public CostDetails fetchParcelCost(ParcelDetails parcelDetails) {
-        CostCalculatorStrategy costCalculatorStrategy = costCalculatorService.calculateCostDetailsForParcel(parcelDetails);
+    public CostDetails processParcel(ParcelDetails parcelDetails) throws ParcelException {
+        CostCalculatorStrategy costCalculatorStrategy = costCalculatorService.validateAndCalculateCostDetailsOfParcel(parcelDetails);
         ParcelCostDetailsWrapper parcelWrapper = costCalculatorStrategy.calculateCost(parcelDetails);
-        Parcel parcel = parcelWrapper.getParcel();
-        parcelRepository.save(parcel);
-        return parcelWrapper.getCostDetails();
+        if(parcelWrapper != null) {
+            Parcel parcel = parcelWrapper.getParcel();
+            parcelRepository.save(parcel);
+            return parcelWrapper.getCostDetails();
+        } else {
+            String errorMessage = "Parcel wrapper is null";
+            throw new ParcelException(errorMessage);
+        }
     }
 
     public List<Parcel> fetchAllParcels() {

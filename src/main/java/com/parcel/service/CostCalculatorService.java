@@ -2,14 +2,17 @@ package com.parcel.service;
 
 import com.parcel.constants.ParcelConstraints;
 import com.parcel.dto.ParcelDetails;
+import com.parcel.exception.ParcelException;
 import com.parcel.strategy.*;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CostCalculatorService {
 
-    public CostCalculatorStrategy calculateCostDetailsForParcel(ParcelDetails parcelDetails) {
-        if (isHeavyParcel(parcelDetails)) {
+    public CostCalculatorStrategy validateAndCalculateCostDetailsOfParcel(ParcelDetails parcelDetails) throws ParcelException {
+        validateParcel(parcelDetails);
+        double weight = parcelDetails.getWeight();
+        if (isHeavyParcel(weight)) {
             return new HeavyParcelCostCalculatorStrategy();
         } else {
             double volume = parcelDetails.getHeight() * parcelDetails.getLength() * parcelDetails.getWidth();
@@ -23,8 +26,33 @@ public class CostCalculatorService {
         }
     }
 
-    private static boolean isHeavyParcel(ParcelDetails parcelDetails) {
-        return parcelDetails.getWeight() > ParcelConstraints.HEAVY_PARCEL_WEIGHT_LIMIT;
+    private void validateParcel(ParcelDetails parcelDetails) throws ParcelException {
+        if (parcelDetails == null) {
+            processNullParcel();
+        }
+        double weight = parcelDetails.getWeight();
+        if (isOverWeightParcel(weight)) {
+            processOverWeightParcel(weight);
+        }
+    }
+
+    private void processNullParcel() throws ParcelException {
+        String errorMessage = "Requested parcel is null";
+        throw new ParcelException(errorMessage);
+    }
+
+    private void processOverWeightParcel(double weight) throws ParcelException {
+        String errorMessage = "Requested parcel is of " + weight + " kg. Parcel with weight above " + ParcelConstraints.MAX_PARCEL_WEIGHT_LIMIT + " kg can not be delivered";
+        throw new ParcelException(errorMessage);
+    }
+
+    protected boolean isOverWeightParcel(double weight) {
+        return weight > ParcelConstraints.HEAVY_PARCEL_WEIGHT_LIMIT;
+    }
+
+
+    private static boolean isHeavyParcel(double weight) {
+        return weight > ParcelConstraints.HEAVY_PARCEL_WEIGHT_LIMIT;
     }
 
     private static boolean isSmallParcel(double volume) {
