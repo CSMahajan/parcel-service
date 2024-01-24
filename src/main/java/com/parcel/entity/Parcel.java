@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name="parcel")
@@ -33,4 +34,22 @@ public class Parcel {
     private double cost;
     @Column(name="parcelType")
     private ParcelType parcelType;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Parcel parcel = (Parcel) o;
+        return Double.compare(parcel.weight, weight) == 0 &&
+                Double.compare(parcel.height, height) == 0 &&
+                Double.compare(parcel.width, width) == 0 &&
+                Double.compare(parcel.length, length) == 0 &&
+                Double.compare(parcel.cost, cost) == 0 &&
+                parcelType == parcel.parcelType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(weight, height, width, length, cost, parcelType);
+    }
 }

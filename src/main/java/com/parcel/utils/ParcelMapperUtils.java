@@ -10,10 +10,10 @@ import java.util.UUID;
 @UtilityClass
 public class ParcelMapperUtils {
 
-    public Parcel mapParcelDetailsToEntity(ParcelDetails parcelDetails, double parcelCost, ParcelType parcelType) {
+    public Parcel mapParcelDetailsToEntity(ParcelDetails parcelDetails, double parcelCost, double weight, ParcelType parcelType) {
         return Parcel.builder().parcelId(generateUUId())
                 .parcelType(parcelType)
-                .weight(parcelDetails.getWeight())
+                .weight(weight)
                 .width(parcelDetails.getWidth())
                 .height(parcelDetails.getHeight())
                 .length(parcelDetails.getLength())

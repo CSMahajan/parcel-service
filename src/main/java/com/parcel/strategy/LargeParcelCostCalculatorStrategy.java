@@ -22,8 +22,9 @@ public class LargeParcelCostCalculatorStrategy implements VolumeBasedCostCalcula
 
     @Override
     public ParcelCostDetailsWrapper calculateCost(ParcelDetails parcelDetails) {
+        double weight = parcelDetails.getWeight();
         double cost = ParcelConstraints.LARGE_PARCEL_COST_MULTIPLIER * volume;
-        Parcel parcel = ParcelMapperUtils.mapParcelDetailsToEntity(parcelDetails, cost, ParcelType.LARGE_PARCEL);
+        Parcel parcel = ParcelMapperUtils.mapParcelDetailsToEntity(parcelDetails, cost, weight, ParcelType.LARGE_PARCEL);
         CostDetails costDetails = CostDetails.builder().cost(cost).
                 parcelTypeName(parcel.getParcelType().getParcelTypeName())
                 .priority(parcel.getParcelType().getPriority())
