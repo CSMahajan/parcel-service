@@ -26,9 +26,8 @@ public class ParcelServiceController {
 
     @PostMapping("/create-parcel")
     @ApiOperation(value = "Create a new parcel", response = CostDetails.class)
-    public ResponseEntity<Object> calculateCost(@RequestBody ParcelDetails parcelDetails) throws ParcelException {
-        CostDetails costDetails = parcelService.processParcel(parcelDetails);
-        return new ResponseEntity<>(costDetails, HttpStatus.OK);
+    public ResponseEntity<CostDetails> calculateCost(@RequestBody ParcelDetails parcelDetails) throws ParcelException {
+        return parcelService.processParcel(parcelDetails);
     }
 
     @GetMapping("/all")

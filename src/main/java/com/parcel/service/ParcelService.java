@@ -28,17 +28,16 @@ public class ParcelService {
         this.costCalculatorService = costCalculatorService;
     }
 
-    public CostDetails processParcel(ParcelDetails parcelDetails) throws ParcelException {
+    public ResponseEntity<CostDetails> processParcel(ParcelDetails parcelDetails) throws ParcelException {
         CostCalculatorStrategy costCalculatorStrategy = costCalculatorService.validateAndCalculateCostDetailsOfParcel(parcelDetails);
-        ParcelCostDetailsWrapper parcelWrapper = costCalculatorStrategy.calculateCost(parcelDetails);
-        if (parcelWrapper != null) {
-            Parcel parcel = parcelWrapper.getParcel();
-            parcelRepository.save(parcel);
-            return parcelWrapper.getCostDetails();
-        } else {
-            String errorMessage = "Parcel wrapper is null";
+        if (costCalculatorStrategy == null) {
+            String errorMessage = "Cost calculator strategy is null";
             throw new ParcelException(errorMessage);
         }
+        ParcelCostDetailsWrapper parcelWrapper = costCalculatorStrategy.calculateCost(parcelDetails);
+        Parcel parcel = parcelWrapper.getParcel();
+        parcelRepository.save(parcel);
+        return new ResponseEntity<>(parcelWrapper.getCostDetails(), HttpStatus.OK);
     }
 
     public List<Parcel> fetchAllParcels() {
