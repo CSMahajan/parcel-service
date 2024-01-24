@@ -20,7 +20,6 @@ public class LargeParcelCostCalculatorStrategy implements VolumeBasedCostCalcula
         this.volume = volume;
     }
 
-
     @Override
     public ParcelCostDetailsWrapper calculateCost(ParcelDetails parcelDetails) {
         double cost = ParcelConstraints.LARGE_PARCEL_COST_MULTIPLIER * volume;
