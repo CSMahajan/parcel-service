@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CostCalculatorService {
 
-    private CostCalculatorStrategy costCalculatorStrategy;
-
     public CostCalculatorStrategy calculateCostDetailsForParcel(ParcelDetails parcelDetails) {
         //double cost = 0;
 

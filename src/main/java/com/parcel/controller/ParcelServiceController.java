@@ -4,7 +4,6 @@ import com.parcel.dto.CostDetails;
 import com.parcel.dto.ParcelDetails;
 import com.parcel.entity.Parcel;
 import com.parcel.exception.ParcelException;
-import com.parcel.exception.ParcelExceptionHandler;
 import com.parcel.service.ParcelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/api/parcels")
 public class ParcelServiceController {
-
-    @Autowired
-    private ParcelExceptionHandler parcelExceptionHandler;
 
     @Autowired
     private ParcelService parcelService;
@@ -34,7 +30,7 @@ public class ParcelServiceController {
     }
 
     @GetMapping("/all")
-    public List<Parcel> getAllEmployees(){
+    public List<Parcel> getAllEmployees() {
         return parcelService.fetchAllParcels();
     }
 }
