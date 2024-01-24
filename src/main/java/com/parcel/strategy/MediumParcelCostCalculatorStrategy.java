@@ -26,7 +26,8 @@ public class MediumParcelCostCalculatorStrategy implements VolumeBasedCostCalcul
         Parcel parcel = ParcelMapperUtils.mapParcelDetailsToEntity(parcelDetails, cost, ParcelType.MEDIUM_PARCEL);
         CostDetails costDetails = CostDetails.builder().cost(cost).
                 parcelTypeName(parcel.getParcelType().getParcelTypeName())
-                .priority(parcel.getParcelType().getPriority()).build();
+                .priority(parcel.getParcelType().getPriority())
+                .parcelId(parcel.getParcelId()).build();
         parcelCostDetailsWrapper = new ParcelCostDetailsWrapper();
         parcelCostDetailsWrapper.setCostDetails(costDetails);
         parcelCostDetailsWrapper.setParcelDetails(parcelDetails);

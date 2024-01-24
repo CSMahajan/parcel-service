@@ -9,7 +9,7 @@ import com.parcel.utils.ParcelMapperUtils;
 import com.parcel.wrapper.ParcelCostDetailsWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class HeavyParcelCostCalculatorStrategy implements WeightBasedCostCalculatorStrategy{
+public class HeavyParcelCostCalculatorStrategy implements WeightBasedCostCalculatorStrategy {
 
     @Autowired
     ParcelCostDetailsWrapper parcelCostDetailsWrapper;
@@ -20,7 +20,8 @@ public class HeavyParcelCostCalculatorStrategy implements WeightBasedCostCalcula
         Parcel parcel = ParcelMapperUtils.mapParcelDetailsToEntity(parcelDetails, cost, ParcelType.HEAVY_PARCEL);
         CostDetails costDetails = CostDetails.builder().cost(cost).
                 parcelTypeName(parcel.getParcelType().getParcelTypeName())
-                .priority(parcel.getParcelType().getPriority()).build();
+                .priority(parcel.getParcelType().getPriority())
+                .parcelId(parcel.getParcelId()).build();
         parcelCostDetailsWrapper = new ParcelCostDetailsWrapper();
         parcelCostDetailsWrapper.setCostDetails(costDetails);
         parcelCostDetailsWrapper.setParcelDetails(parcelDetails);
