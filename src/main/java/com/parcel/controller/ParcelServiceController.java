@@ -1,5 +1,6 @@
 package com.parcel.controller;
 
+import com.parcel.constants.ParcelConstraints;
 import com.parcel.dto.CostDetails;
 import com.parcel.dto.ParcelDetails;
 import com.parcel.entity.Parcel;
@@ -22,7 +23,7 @@ public class ParcelServiceController {
     @PostMapping("/create")
     public ResponseEntity<Object> calculateCost(@RequestBody ParcelDetails parcelDetails) throws ParcelException {
         if (parcelDetails.getWeight() > 50) {
-            String errorMessage = "Requested parcel is of " + parcelDetails.getWeight() + " kg. Parcel with weight above 50 kg can not be delivered";
+            String errorMessage = "Requested parcel is of " + parcelDetails.getWeight() + " kg. Parcel with weight above " + ParcelConstraints.PARCEL_WEIGHT_LIMIT +" kg can not be delivered";
             throw new ParcelException(errorMessage);
         }
         CostDetails costDetails = parcelService.fetchParcelCost(parcelDetails);
@@ -32,5 +33,10 @@ public class ParcelServiceController {
     @GetMapping("/all")
     public List<Parcel> getAllEmployees() {
         return parcelService.fetchAllParcels();
+    }
+
+    @GetMapping("/parcel/{parcelId}")
+    public ResponseEntity<Parcel> getAllEmployees(@PathVariable long parcelId) {
+        return parcelService.fetchParcelById(parcelId);
     }
 }
