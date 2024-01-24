@@ -47,4 +47,25 @@ public class ParcelService {
     public ResponseEntity<Parcel> fetchParcelById(long parcelId) {
         return parcelRepository.findById(parcelId).map(person -> new ResponseEntity<>(person, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    public ResponseEntity<Parcel> updateParcelDetails(long parcelId, Parcel updatedParcel) {
+        return parcelRepository.findById(parcelId)
+                .map(parcel -> {
+                    parcel.setWeight(updatedParcel.getWeight());
+                    parcel.setLength(updatedParcel.getLength());
+                    parcel.setWidth(updatedParcel.getWidth());
+                    parcel.setHeight(updatedParcel.getHeight());
+                    return new ResponseEntity<>(parcelRepository.save(parcel), HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    public ResponseEntity<Void> deleteParcel(long parcelId) {
+        if (parcelRepository.existsById(parcelId)) {
+            parcelRepository.deleteById(parcelId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

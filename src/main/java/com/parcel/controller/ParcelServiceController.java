@@ -24,7 +24,7 @@ public class ParcelServiceController {
     @Autowired
     private ParcelService parcelService;
 
-    @PostMapping("/create")
+    @PostMapping("/create-parcel")
     @ApiOperation(value = "Create a new parcel", response = CostDetails.class)
     public ResponseEntity<Object> calculateCost(@RequestBody ParcelDetails parcelDetails) throws ParcelException {
         CostDetails costDetails = parcelService.processParcel(parcelDetails);
@@ -33,13 +33,25 @@ public class ParcelServiceController {
 
     @GetMapping("/all")
     @ApiOperation(value = "Retrieve all parcels", response = Parcel.class)
-    public List<Parcel> getAllEmployees() {
+    public List<Parcel> getAllParcels() {
         return parcelService.fetchAllParcels();
     }
 
     @GetMapping("/parcel/{parcelId}")
     @ApiOperation(value = "Retrieve a parcel by ID", response = Parcel.class)
-    public ResponseEntity<Parcel> getAllEmployees(@PathVariable long parcelId) {
+    public ResponseEntity<Parcel> getParcelById(@PathVariable long parcelId) {
         return parcelService.fetchParcelById(parcelId);
+    }
+
+    @PutMapping("/update-parcel/{parcelId}")
+    @ApiOperation(value = "Update a parcel by ID", response = Parcel.class)
+    public ResponseEntity<Parcel> updateParcel(@PathVariable long parcelId, @RequestBody Parcel updatedParcel) {
+        return parcelService.updateParcelDetails(parcelId, updatedParcel);
+    }
+
+    @DeleteMapping("/delete-parcel/{parcelId}")
+    @ApiOperation(value = "Delete a parcel by ID")
+    public ResponseEntity<Void> deleteParcel(@PathVariable long parcelId) {
+        return parcelService.deleteParcel(parcelId);
     }
 }

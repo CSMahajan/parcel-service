@@ -47,7 +47,7 @@ public class CostCalculatorService {
     }
 
     protected boolean isOverWeightParcel(double weight) {
-        return weight > ParcelConstraints.HEAVY_PARCEL_WEIGHT_LIMIT;
+        return weight > ParcelConstraints.MAX_PARCEL_WEIGHT_LIMIT;
     }
 
 
