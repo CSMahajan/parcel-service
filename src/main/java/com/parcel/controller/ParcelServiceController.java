@@ -39,7 +39,7 @@ public class ParcelServiceController {
 
     @GetMapping("/parcel/{parcelId}")
     @ApiOperation(value = "Retrieve a parcel by ID", response = Parcel.class)
-    public ResponseEntity<Parcel> getParcelById(@PathVariable long parcelId) {
+    public Parcel getParcelById(@PathVariable long parcelId) throws ParcelException {
         return parcelService.fetchParcelById(parcelId);
     }
 

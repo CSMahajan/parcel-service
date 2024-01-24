@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ParcelService {
@@ -30,7 +31,7 @@ public class ParcelService {
     public CostDetails processParcel(ParcelDetails parcelDetails) throws ParcelException {
         CostCalculatorStrategy costCalculatorStrategy = costCalculatorService.validateAndCalculateCostDetailsOfParcel(parcelDetails);
         ParcelCostDetailsWrapper parcelWrapper = costCalculatorStrategy.calculateCost(parcelDetails);
-        if(parcelWrapper != null) {
+        if (parcelWrapper != null) {
             Parcel parcel = parcelWrapper.getParcel();
             parcelRepository.save(parcel);
             return parcelWrapper.getCostDetails();
@@ -44,8 +45,11 @@ public class ParcelService {
         return parcelRepository.findAll();
     }
 
-    public ResponseEntity<Parcel> fetchParcelById(long parcelId) {
-        return parcelRepository.findById(parcelId).map(person -> new ResponseEntity<>(person, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Parcel fetchParcelById(long parcelId) throws ParcelException {
+        Optional<Parcel> parcelOptional = parcelRepository.findById(parcelId);
+        if (parcelOptional.isPresent()) {
+            return parcelOptional.get();
+        } else throw new ParcelException("Parcel not found with id " + parcelId);
     }
 
     public ResponseEntity<Parcel> updateParcelDetails(long parcelId, Parcel updatedParcel) {
