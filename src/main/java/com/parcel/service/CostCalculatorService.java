@@ -1,5 +1,6 @@
 package com.parcel.service;
 
+import com.parcel.constants.ParcelConstraints;
 import com.parcel.dto.ParcelDetails;
 import com.parcel.strategy.*;
 import org.springframework.stereotype.Service;
@@ -8,21 +9,15 @@ import org.springframework.stereotype.Service;
 public class CostCalculatorService {
 
     public CostCalculatorStrategy calculateCostDetailsForParcel(ParcelDetails parcelDetails) {
-        //double cost = 0;
-
-        if (parcelDetails.getWeight() > 10) {
-            //cost = 20 * parcelDetails.getWeight();
+        if (parcelDetails.getWeight() > ParcelConstraints.HEAVY_PARCEL_WEIGHT_LIMIT) {
             return new HeavyParcelCostCalculatorStrategy();
         } else {
             double volume = parcelDetails.getHeight() * parcelDetails.getLength() * parcelDetails.getWidth();
-            if (volume < 1500) {
-                //cost = 0.03 * volume;
+            if (volume < ParcelConstraints.SMALL_PARCEL_VOLUME_LIMIT) {
                 return new SmallParcelCostCalculatorStrategy(volume);
-            } else if (volume >= 1500 && volume < 2500) {
-                //cost = 0.04 * volume;
+            } else if (volume >= ParcelConstraints.SMALL_PARCEL_VOLUME_LIMIT && volume < ParcelConstraints.LARGE_PARCEL_VOLUME_LIMIT) {
                 return new MediumParcelCostCalculatorStrategy(volume);
             } else {
-                //cost = 0.05 * volume;
                 return new LargeParcelCostCalculatorStrategy(volume);
             }
         }

@@ -1,5 +1,6 @@
 package com.parcel.strategy;
 
+import com.parcel.constants.ParcelConstraints;
 import com.parcel.constants.ParcelType;
 import com.parcel.dto.CostDetails;
 import com.parcel.dto.ParcelDetails;
@@ -13,7 +14,7 @@ public class MediumParcelCostCalculatorStrategy implements VolumeBasedCostCalcul
     @Autowired
     ParcelCostDetailsWrapper parcelCostDetailsWrapper;
 
-    private double volume;
+    private final double volume;
 
     public MediumParcelCostCalculatorStrategy(double volume) {
         this.volume = volume;
@@ -21,8 +22,7 @@ public class MediumParcelCostCalculatorStrategy implements VolumeBasedCostCalcul
 
     @Override
     public ParcelCostDetailsWrapper calculateCost(ParcelDetails parcelDetails) {
-        //double volume = parcelDetails.getHeight() * parcelDetails.getLength() * parcelDetails.getWidth();
-        double cost = 0.04 * volume;
+        double cost = ParcelConstraints.MEDIUM_PARCEL_COST_MULTIPLIER * volume;
         Parcel parcel = ParcelMapperUtils.mapParcelDetailsToEntity(parcelDetails, cost, ParcelType.MEDIUM_PARCEL);
         CostDetails costDetails = CostDetails.builder().cost(cost).
                 parcelTypeName(parcel.getParcelType().getParcelTypeName())

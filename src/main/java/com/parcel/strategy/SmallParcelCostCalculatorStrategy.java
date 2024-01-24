@@ -1,5 +1,6 @@
 package com.parcel.strategy;
 
+import com.parcel.constants.ParcelConstraints;
 import com.parcel.constants.ParcelType;
 import com.parcel.dto.CostDetails;
 import com.parcel.dto.ParcelDetails;
@@ -8,12 +9,12 @@ import com.parcel.utils.ParcelMapperUtils;
 import com.parcel.wrapper.ParcelCostDetailsWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class SmallParcelCostCalculatorStrategy implements VolumeBasedCostCalculatorStrategy{
+public class SmallParcelCostCalculatorStrategy implements VolumeBasedCostCalculatorStrategy {
 
     @Autowired
     ParcelCostDetailsWrapper parcelCostDetailsWrapper;
 
-    private double volume;
+    private final double volume;
 
     public SmallParcelCostCalculatorStrategy(double volume) {
         this.volume = volume;
@@ -21,8 +22,7 @@ public class SmallParcelCostCalculatorStrategy implements VolumeBasedCostCalcula
 
     @Override
     public ParcelCostDetailsWrapper calculateCost(ParcelDetails parcelDetails) {
-        //double volume = parcelDetails.getHeight() * parcelDetails.getLength() * parcelDetails.getWidth();
-        double cost = 0.03 * volume;
+        double cost = ParcelConstraints.SMALL_PARCEL_COST_MULTIPLIER * volume;
         Parcel parcel = ParcelMapperUtils.mapParcelDetailsToEntity(parcelDetails, cost, ParcelType.SMALL_PARCEL);
         CostDetails costDetails = CostDetails.builder().cost(cost).
                 parcelTypeName(parcel.getParcelType().getParcelTypeName())

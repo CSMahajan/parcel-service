@@ -22,8 +22,8 @@ public class ParcelServiceController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> calculateCost(@RequestBody ParcelDetails parcelDetails) throws ParcelException {
-        if (parcelDetails.getWeight() > 50) {
-            String errorMessage = "Requested parcel is of " + parcelDetails.getWeight() + " kg. Parcel with weight above " + ParcelConstraints.PARCEL_WEIGHT_LIMIT +" kg can not be delivered";
+        if (parcelDetails.getWeight() > ParcelConstraints.MAX_PARCEL_WEIGHT_LIMIT) {
+            String errorMessage = "Requested parcel is of " + parcelDetails.getWeight() + " kg. Parcel with weight above " + ParcelConstraints.MAX_PARCEL_WEIGHT_LIMIT +" kg can not be delivered";
             throw new ParcelException(errorMessage);
         }
         CostDetails costDetails = parcelService.fetchParcelCost(parcelDetails);

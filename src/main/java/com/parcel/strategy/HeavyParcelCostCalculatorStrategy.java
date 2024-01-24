@@ -1,5 +1,6 @@
 package com.parcel.strategy;
 
+import com.parcel.constants.ParcelConstraints;
 import com.parcel.constants.ParcelType;
 import com.parcel.dto.CostDetails;
 import com.parcel.dto.ParcelDetails;
@@ -15,7 +16,7 @@ public class HeavyParcelCostCalculatorStrategy implements WeightBasedCostCalcula
 
     @Override
     public ParcelCostDetailsWrapper calculateCost(ParcelDetails parcelDetails) {
-        double cost = 20 * parcelDetails.getWeight();
+        double cost = ParcelConstraints.HEAVY_PARCEL_COST_MULTIPLIER * parcelDetails.getWeight();
         Parcel parcel = ParcelMapperUtils.mapParcelDetailsToEntity(parcelDetails, cost, ParcelType.HEAVY_PARCEL);
         CostDetails costDetails = CostDetails.builder().cost(cost).
                 parcelTypeName(parcel.getParcelType().getParcelTypeName())

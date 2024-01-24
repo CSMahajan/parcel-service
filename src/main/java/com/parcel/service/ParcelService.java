@@ -3,7 +3,6 @@ package com.parcel.service;
 import com.parcel.dto.CostDetails;
 import com.parcel.dto.ParcelDetails;
 import com.parcel.entity.Parcel;
-import com.parcel.exception.ParcelException;
 import com.parcel.repository.ParcelRepository;
 import com.parcel.strategy.CostCalculatorStrategy;
 import com.parcel.wrapper.ParcelCostDetailsWrapper;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ParcelService {
@@ -42,8 +40,5 @@ public class ParcelService {
 
     public ResponseEntity<Parcel> fetchParcelById(long parcelId) {
         return parcelRepository.findById(parcelId).map(person -> new ResponseEntity<>(person, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    //Throw(new ParcelException("Could not find parcel with id " + parcelId));
-        //Optional<Parcel> parcelOptional = parcelRepository.findById(parcelId);
-        //if(parcelOptional.)
     }
 }
