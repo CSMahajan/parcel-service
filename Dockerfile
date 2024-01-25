@@ -1,6 +1,8 @@
 FROM openjdk:8-jdk-alpine
-VOLUME /tmp
+WORKDIR /app
+COPY target/*.jar /app/parcel-service.jar
 EXPOSE 8080
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENV DATABASE_URL jdbc:postgresql://localhost:5432/postgres
+ENV DATABASE_USERNAME postgres
+ENV DATABASE_PASSWORD postgres
+CMD ["java", "-jar", "parcel-service.jar"]
