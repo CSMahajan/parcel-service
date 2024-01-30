@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/api/parcels")
 @EnableSwagger2
+@CrossOrigin
 @Api(value = "Parcel API", description = "CRUD operations for Parcel")
 public class ParcelServiceController {
 
